@@ -7,7 +7,6 @@ import './components/Cart/Cart.css';
 import './components/Checkout/CheckoutForm.css';
 import './components/Checkout/OrderConfirmation.css';
 import './components/ItemCount/ItemCount.css';
-import './components/Loader/loader.css';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
