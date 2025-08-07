@@ -1,178 +1,68 @@
-import { useState } from 'react';
-import { useCart } from '../../context/CartContext';
-import { useNavigate } from 'react-router-dom';
-import { db } from '../../firebase/config';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import './CheckoutForm.css';
-import Loader from '../Loader/Loader';
+import { useCart } from "../../context/CartContext";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import "./CheckoutForm.css";
 
 const CheckoutForm = () => {
-  const { cart, totalPrice, clearCart } = useCart();
-  const [buyer, setBuyer] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: ''
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  const { createOrder } = useCart();
   const navigate = useNavigate();
 
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (e) => {
-    setBuyer({
-      ...buyer,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const createOrder = async () => {
-    const order = {
-      buyer,
-      items: cart,
-      total: totalPrice,
-      date: serverTimestamp(),
-      status: 'completed',
-      paymentMethod: 'online'
-    };
-
-    const docRef = await addDoc(collection(db, "orders"), order);
-    return docRef.id;
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (cart.length === 0) {
-      setError("Tu carrito está vacío");
-      return;
-    }
-
-    if (!buyer.email.includes('@')) {
-      setError("Por favor ingresa un email válido");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
+    setIsSubmitting(true);
 
     try {
-      const orderId = await createOrder();
-      setSuccess(true);
-      setTimeout(() => {
-        clearCart();
-        navigate(`/order/${orderId}`);
-      }, 2000);
+      const orderId = await createOrder(form);
+      navigate(`/order/${orderId}`);
     } catch (error) {
-      setError("Ocurrió un error al procesar tu pago. Por favor intenta nuevamente.");
-      console.error("Error en el pago:", error);
-    } finally {
-      setLoading(false);
+      console.error("Error al finalizar compra:", error);
     }
   };
 
-  if (cart.length === 0) {
-    return (
-      <div className="empty-cart">
-        <h2>Tu carrito está vacío</h2>
-        <button onClick={() => navigate('/')} className="back-button">
-          Volver a la tienda
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="checkout-container">
-      <h2>Finalizar Compra</h2>
-      
-      {success && (
-        <div className="success-message">
-          <p>¡Pago completado con éxito!</p>
-          <p>Redirigiendo a tu comprobante...</p>
-        </div>
-      )}
-
-      {!success && (
-        <div className="checkout-content">
-          <div className="order-summary">
-            <h3>Resumen de tu orden</h3>
-            <ul>
-              {cart.map(item => (
-                <li key={item.id}>
-                  <span>{item.name} x {item.quantity}</span>
-                  <span>${(item.price * item.quantity).toLocaleString('es-CO')}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="order-total">
-              <span>Total:</span>
-              <span>${totalPrice.toLocaleString('es-CO')}</span>
-            </div>
-          </div>
-          
-          <form onSubmit={handleSubmit} className="checkout-form">
-            <h3>Información de contacto</h3>
-            
-            {error && <div className="error-message">{error}</div>}
-
-            <div className="form-group">
-              <label>Nombre completo*</label>
-              <input
-                type="text"
-                name="name"
-                value={buyer.name}
-                onChange={handleChange}
-                required
-                minLength="3"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Email*</label>
-              <input
-                type="email"
-                name="email"
-                value={buyer.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Teléfono*</label>
-              <input
-                type="tel"
-                name="phone"
-                value={buyer.phone}
-                onChange={handleChange}
-                required
-                pattern="[0-9]{10,15}"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Dirección*</label>
-              <input
-                type="text"
-                name="address"
-                value={buyer.address}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <button 
-              type="submit" 
-              disabled={loading} 
-              className="submit-btn"
-            >
-              {loading ? <Loader small /> : 'Confirmar Pago'}
-            </button>
-          </form>
-        </div>
-      )}
+      <h2 className="checkout-title">Finalizar Compra</h2>
+      <form onSubmit={handleSubmit} className="checkout-form">
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Nombre completo"
+          required
+        />
+        <input
+          type="tel"
+          name="phone"
+          value={form.phone}
+          onChange={handleChange}
+          placeholder="Teléfono"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Correo electrónico"
+          required
+        />
+        <button className="submit-btn" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Procesando..." : "Confirmar compra"}
+        </button>
+      </form>
     </div>
   );
 };
