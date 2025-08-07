@@ -3,15 +3,8 @@ import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
   return (
-    <Link
-      to={`/product/${product.id}`}
-      className="product-card"
-    >
-      <img
-        src={product.image}
-        alt={product.name}
-        className="product-image"
-      />
+    <Link to={`/product/${product.id}`} className="product-card">
+      <img src={product.image} alt={product.name} className="product-image" />
       <div className="product-info">
         <h3>{product.name}</h3>
         <p className="product-price">${product.price.toLocaleString('es-CO')}</p>

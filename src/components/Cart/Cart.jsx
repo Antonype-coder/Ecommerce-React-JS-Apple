@@ -4,14 +4,14 @@ import './Cart.css';
 
 const Cart = () => {
   const {
-    cartItems,
+    cart,
     removeFromCart,
     updateQuantity,
     clearCart,
     totalPrice
   } = useCart();
 
-  if (cartItems.length === 0) {
+  if (cart.length === 0) {
     return (
       <div className="empty-cart">
         <h2>Tu carrito está vacío</h2>
@@ -26,7 +26,7 @@ const Cart = () => {
     <div className="cart-container">
       <h1>Tu Carrito</h1>
       <div className="cart-items">
-        {cartItems.map((item) => (
+        {cart.map((item) => (
           <div key={item.id} className="cart-item">
             <img
               src={item.image}

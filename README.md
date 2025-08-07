@@ -1,12 +1,5 @@
-# React + Vite
+# Ecommerce Apple Store - React + Firebase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Hola, soy Antony Peña. Este proyecto es un e-commerce simulado de productos Apple desarrollado con React, que utiliza Firebase Firestore para la gestión de datos. Está diseñado para mostrar productos, filtrar por categorías, agregar productos al carrito y realizar un checkout con generación de órdenes almacenadas en Firebase.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Este trabajo lo presento como parte de mi formación en Coderhouse, demostrando los conocimientos adquiridos en React.

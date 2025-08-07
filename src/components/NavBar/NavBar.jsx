@@ -13,12 +13,12 @@ const NavBar = () => {
         <img src={logo} alt="Apple Store" />
       </Link>
       <ul className="nav-links">
-        <li><Link to="/">Inicio</Link></li>
-        <li><Link to="/category/iphone">iPhone</Link></li>
-        <li><Link to="/category/mac">Mac</Link></li>
-        <li><Link to="/category/ipad">iPad</Link></li>
-        <li><Link to="/category/watch">Apple Watch</Link></li>
-        <li><Link to="/category/audio">Audio</Link></li>
+        <li><Link to="/" className="nav-link">Inicio</Link></li>
+        <li><Link to="/category/iphone" className="nav-link">iPhone</Link></li>
+        <li><Link to="/category/mac" className="nav-link">Mac</Link></li>
+        <li><Link to="/category/ipad" className="nav-link">iPad</Link></li>
+        <li><Link to="/category/watch" className="nav-link">Apple Watch</Link></li>
+        <li><Link to="/category/audio" className="nav-link">Audio</Link></li>
         <li>
           <Link to="/cart" className="cart-link">
             <img src={carro} alt="Carrito" className="carro-icon" />

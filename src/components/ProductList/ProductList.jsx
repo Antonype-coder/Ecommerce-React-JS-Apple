@@ -2,40 +2,44 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductCard from './ProductCard';
 import Loader from '../Loader/Loader';
-import productos, { getProductsByCategory } from '../../assets/productos';
+import { getProducts, getProductsByCategory } from '../../assets/productos';
 import './ProductList.css';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { categoryId } = useParams();
 
   useEffect(() => {
     setLoading(true);
-    const fetchProducts = () => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const data = categoryId
-            ? getProductsByCategory(categoryId)
-            : productos;
-          resolve(data);
-        }, 500);
-      });
+    setError(null);
+
+    const fetchProducts = async () => {
+      try {
+        const data = categoryId
+          ? await getProductsByCategory(categoryId)
+          : await getProducts();
+        setProducts(data);
+      } catch (error) {
+        setError("Error al cargar los productos");
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchProducts().then((data) => {
-      setProducts(data);
-      setLoading(false);
-    });
+    fetchProducts();
   }, [categoryId]);
 
   if (loading) return <Loader />;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div className="product-list-container">
       <h1>{categoryId ? `Productos ${categoryId}` : 'Todos los productos'}</h1>
       <div className="products-grid">
-        {products.map((product) => (
+        {products.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
