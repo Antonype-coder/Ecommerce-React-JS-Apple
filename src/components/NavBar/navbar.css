@@ -26,6 +26,11 @@
 .nav-links a {
   font-weight: 500;
   color: #1d1d1f;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #0071e3;
 }
 
 .carro-icon {

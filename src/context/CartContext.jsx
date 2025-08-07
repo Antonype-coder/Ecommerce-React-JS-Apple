@@ -1,24 +1,43 @@
-// src/context/CartContext.jsx
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  // Ejemplo: total quantity en carrito
-  const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const addToCart = (product, quantity) => {
+    const existingItem = cartItems.find(item => item.id === product.id);
 
-  // Métodos para agregar, eliminar, etc.
+    if (existingItem) {
+      const updatedCart = cartItems.map(item =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + quantity }
+          : item
+      );
+      setCartItems(updatedCart);
+    } else {
+      setCartItems([...cartItems, { ...product, quantity }]);
+    }
+  };
+
+  const removeFromCart = (id) => {
+    setCartItems(cartItems.filter(item => item.id !== id));
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ cartItems, setCartItems, totalQuantity }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart, totalQuantity, totalPrice }}>
       {children}
     </CartContext.Provider>
   );
 };
 
-// Aquí defines y exportas el hook para usar el contexto
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {

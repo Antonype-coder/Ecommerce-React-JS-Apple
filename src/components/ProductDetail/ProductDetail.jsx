@@ -1,10 +1,11 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import productos from '../../assets/productos';
 import ItemCount from '../ItemCount/ItemCount';
 import Loader from '../Loader/Loader';
 import './ProductDetail.css';
+
 
 const ProductDetail = () => {
   const { id } = useParams();

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './CheckoutForm.css';
 
 const CheckoutForm = () => {
-  const { cart, totalPrice, clearCart } = useCart();
+  const { cartItems, totalPrice, clearCart } = useCart(); 
   const [buyer, setBuyer] = useState({
     name: '',
     email: '',
@@ -25,17 +25,15 @@ const CheckoutForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
-      // Simulación de envío a Firebase
       const newOrder = {
         buyer,
-        items: cart,
+        items: cartItems,
         total: totalPrice,
         date: new Date().toISOString()
       };
-      
-      // Simulamos un ID de orden
+
       const simulatedOrderId = `order-${Math.random().toString(36).substr(2, 9)}`;
       setOrderId(simulatedOrderId);
       clearCart();
@@ -58,7 +56,7 @@ const CheckoutForm = () => {
         <div className="order-summary">
           <h3>Resumen de tu orden</h3>
           <ul>
-            {cart.map(item => (
+            {cartItems.map(item => ( 
               <li key={item.id}>
                 {item.name} x {item.quantity} - ${(item.price * item.quantity).toLocaleString('es-CO')}
               </li>
@@ -66,7 +64,7 @@ const CheckoutForm = () => {
           </ul>
           <p className="order-total">Total: ${totalPrice.toLocaleString('es-CO')}</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="checkout-form">
           <h3>Información de contacto</h3>
           <div className="form-group">

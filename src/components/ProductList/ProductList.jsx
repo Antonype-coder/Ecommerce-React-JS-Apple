@@ -8,15 +8,15 @@ import './ProductList.css';
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { category } = useParams();
+  const { categoryId } = useParams();
 
   useEffect(() => {
     setLoading(true);
     const fetchProducts = () => {
       return new Promise((resolve) => {
         setTimeout(() => {
-          const data = category 
-            ? getProductsByCategory(category) 
+          const data = categoryId
+            ? getProductsByCategory(categoryId)
             : productos;
           resolve(data);
         }, 500);
@@ -27,13 +27,13 @@ const ProductList = () => {
       setProducts(data);
       setLoading(false);
     });
-  }, [category]);
+  }, [categoryId]);
 
   if (loading) return <Loader />;
 
   return (
     <div className="product-list-container">
-      <h1>{category ? `Productos ${category}` : 'Todos los productos'}</h1>
+      <h1>{categoryId ? `Productos ${categoryId}` : 'Todos los productos'}</h1>
       <div className="products-grid">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
