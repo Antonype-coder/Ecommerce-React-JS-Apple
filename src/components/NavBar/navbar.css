@@ -1,0 +1,46 @@
+.navbar {
+  background: #ffffffcc;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #ccc;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo img {
+  width: 32px;
+  height: 32px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-links a {
+  font-weight: 500;
+  color: #1d1d1f;
+}
+
+.carro-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.cart-count {
+  background: black;
+  color: white;
+  font-size: 0.7rem;
+  border-radius: 50%;
+  padding: 2px 6px;
+  margin-left: 4px;
+  position: relative;
+  top: -10px;
+  left: -10px;
+}
